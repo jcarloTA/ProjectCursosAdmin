@@ -122,7 +122,10 @@ public class AlumnoPanel extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+        alumnos.add(this.alumno);
+        AsignarCurso asC = new AsignarCurso(alumnos, this.cursos);
+        asC.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
