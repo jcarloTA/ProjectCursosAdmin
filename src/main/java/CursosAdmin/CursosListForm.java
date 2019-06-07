@@ -7,6 +7,7 @@ package CursosAdmin;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -16,14 +17,54 @@ import javax.swing.table.TableModel;
 public class CursosListForm extends javax.swing.JFrame {
     public ArrayList<Curso> cursos;
     public ArrayList<Profesor> profesores;
+    public int ultimaPagina; 
+    public int pagina;
+    public int porPagina;
+    public String[] columns = {"ID","Nombre","Seccion","Fecha Inicio","Fecha Fin", "Hora Inicio", "Hora Fin", "Profesor"};
     
     public CursosListForm(ArrayList<Curso> cursos, ArrayList<Profesor> profesores) {
         initComponents();
         this.cursos = cursos;
         this.profesores = profesores;
+        
+        this.pagina = 0;
+        this.porPagina = 10;
+        this.ultimaPagina = this.cursos.size() / this.porPagina;
+        this.jLabelLastPage.setText(this.ultimaPagina == 0 ? "1" : Integer.toString(this.ultimaPagina));
+        this.jLabelPage.setText(Integer.toString(this.pagina + 1));
         this.llenarTabla();
     }
 
+    public String[][] getDataPorPagina(int pagina) {
+        int iniciarPagina = 0;
+        int endIndexAlumnos = this.cursos.size();
+        int endIndexModel = this.cursos.size();
+        if(this.pagina != 0) {
+            iniciarPagina = this.pagina * this.porPagina;
+        }
+        if(this.cursos.size() > this.porPagina) {
+            endIndexModel = this.porPagina;
+            endIndexAlumnos = iniciarPagina + this.porPagina;
+        }
+        String[][] data = new String[this.porPagina][this.columns.length]; 
+        System.out.println("iniciar Pagina " + iniciarPagina);
+        System.out.println("termina Pagina" + endIndexAlumnos);
+        for (int xx=0, init = iniciarPagina; xx < endIndexModel; xx++, init++) {
+            System.out.println("alumno-----"+this.cursos.get(init).nombre);
+            for (int yy=0; yy < 8; yy++) {
+                System.out.println(this.cursos.get(init).getPropertyByIndex(yy));
+                data[xx][yy] = this.cursos.get(init).getPropertyByIndex(yy);
+            }
+        }
+        return data;
+    }
+    
+            
+    private void llenarTabla(){        
+        String[][] nuevoModel = getDataPorPagina(this.pagina);
+        jTable1.setModel(new DefaultTableModel(nuevoModel, this.columns));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +79,13 @@ public class CursosListForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabelPage = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabelLastPage = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -85,6 +133,37 @@ public class CursosListForm extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Eliminar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Pagina ");
+
+        jLabelPage.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabelPage.setText("1");
+
+        jLabel4.setText("de");
+
+        jLabelLastPage.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabelLastPage.setText("2");
+
+        jButton4.setText(">");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("<");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,10 +175,28 @@ public class CursosListForm extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelPage, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelLastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -109,10 +206,20 @@ public class CursosListForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabelPage)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabelLastPage)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
 
@@ -125,23 +232,6 @@ public class CursosListForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
-            
-    private void llenarTabla(){
-        
-        TableModel modelo = jTable1.getModel();
-        for(int i = 0; i < this.cursos.size(); i++){
-            Curso p = this.cursos.get(i);
-            modelo.setValueAt(p.id, i, 0);
-            modelo.setValueAt(p.nombre, i, 1);
-            modelo.setValueAt(p.seccion, i, 2);
-            modelo.setValueAt(p.fechaInicio, i, 3);
-            modelo.setValueAt(p.fechaFin, i, 4);
-            modelo.setValueAt(p.horaInicio, i, 5);
-            modelo.setValueAt(p.horaFin, i, 6);
-            modelo.setValueAt(p.profasignado.nombre, i, 7);
-
-        }
-    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int[] selectedRows = jTable1.getSelectedRows();
         if (selectedRows.length > 0) {
@@ -150,19 +240,60 @@ public class CursosListForm extends javax.swing.JFrame {
                 CrearCursoForm cr = new CrearCursoForm( this.profesores,this.cursos, selectedRows[0]);
                 cr.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un profesor");
+                JOptionPane.showMessageDialog(this, "Selecciona un curso");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un profesor");
+            JOptionPane.showMessageDialog(this, "Selecciona un curso");
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int[] selectedRows = jTable1.getSelectedRows();
+        if (selectedRows.length > 0) {
+            if(selectedRows[0] <= this.cursos.size()) {
+                System.out.println(this.cursos.get(selectedRows[0]).nombre);
+                this.cursos.remove(selectedRows[0]);
+                llenarTabla();
+                JOptionPane.showMessageDialog(this, "Curso Eliminado");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecciona un curso");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona un curso");
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        if(this.pagina < (this.ultimaPagina -1)){
+            this.pagina += 1;
+            this.jLabelPage.setText(Integer.toString(this.pagina + 1));
+            this.llenarTabla();
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(this.pagina != 0){
+            this.pagina -= 1;
+            this.jLabelPage.setText(Integer.toString(this.pagina + 1));
+            this.llenarTabla();
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelLastPage;
+    private javax.swing.JLabel jLabelPage;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
