@@ -16,14 +16,16 @@ import javax.swing.table.TableModel;
 public class AlumnosListByProfesorForm extends javax.swing.JFrame {
     Curso curso;
     ArrayList<Alumno> alumnos;
+    Profesor profesor;
     /**
      * Creates new form AlumnosListByProfesorForm
      */
-    public AlumnosListByProfesorForm( Curso curso) {
+    public AlumnosListByProfesorForm( Curso curso, Profesor profesor) {
         initComponents();
         this.curso = curso;
         this.alumnos = this.curso.alumnosCurso;
         this.jLabel1.setText("Alumnos de "+this.curso.nombre);
+        this.profesor = profesor;
         this.llenarTabla();
     }
 
@@ -52,6 +54,7 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +102,13 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton3.setText("Generar CSV");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,7 +122,10 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -126,7 +139,9 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(27, 27, 27))
         );
 
@@ -143,7 +158,7 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
         if (selectedRows.length > 0) {
             if(selectedRows[0] <= this.alumnos.size()) {
                 System.out.println(this.alumnos.get(selectedRows[0]).nombre);
-                AgregarNota cr = new AgregarNota(this.alumnos.get(selectedRows[0]),this.curso);
+                AgregarNota cr = new AgregarNota(this.alumnos.get(selectedRows[0]),this.curso, profesor);
                 cr.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Selecciona un alumno");
@@ -153,10 +168,15 @@ public class AlumnosListByProfesorForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

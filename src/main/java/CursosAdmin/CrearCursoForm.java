@@ -57,7 +57,7 @@ public class CrearCursoForm extends javax.swing.JFrame {
         
         while(itProfesores.hasNext()){
             Profesor prof = itProfesores.next();
-            if(prof.cursosProfesor.size() < 5) {
+            if(prof.cursosProfesor.size() < 3) {
                 jComboBoxProfesores.addItem(prof);
             }
         }

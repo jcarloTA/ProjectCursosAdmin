@@ -15,13 +15,15 @@ import javax.swing.JOptionPane;
 public class AgregarNota extends javax.swing.JFrame {
     Alumno alumno;
     Curso curso;
+    Profesor profesor;
     /**
      * Creates new form AgregarNota
      */
-    public AgregarNota(Alumno alumno, Curso curso) {
+    public AgregarNota(Alumno alumno, Curso curso, Profesor profesor) {
         initComponents();
         this.alumno = alumno;
         this.curso = curso;
+        this.profesor = profesor;
     }
 
     /**
@@ -103,20 +105,21 @@ public class AgregarNota extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int nota = (int) jSpinnerNota.getValue();
+        int nota =  (int) jSpinnerNota.getValue();
         Integer yaIngreso = null;
         for(int i = 0; i < this.alumno.notas.size(); i++) {
-            if(this.curso.id.equals(this.alumno.notas.get(i))) {
+            if(this.curso.id.equals(this.alumno.notas.get(i).curso.id)) {
                 yaIngreso = i;
                 break;
             }
         }
         
         if(yaIngreso != null) {
-            this.alumno.notas.get(yaIngreso).nota = nota;
+            this.alumno.notas.get(yaIngreso).nota =  Integer.toString(nota);
         } else {
-            Nota notaFinal = new Nota(nota,this.curso.id);
+            Nota notaFinal = new Nota(Integer.toString(nota),this.curso, this.profesor);
             this.alumno.notas.add(notaFinal);
+            this.profesor.agregarNota(notaFinal);
         }
         JOptionPane.showMessageDialog(this, "Nota agregada correctamente");
         this.dispose();

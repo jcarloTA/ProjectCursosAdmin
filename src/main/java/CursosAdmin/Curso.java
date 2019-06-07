@@ -5,6 +5,7 @@
  */
 package CursosAdmin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author jancarloticun
  */
-public class Curso {
+public class Curso implements Serializable {
     
     public String id;
     public String nombre;
@@ -38,6 +39,28 @@ public class Curso {
 
     void agregarAlumno(Alumno alumno) {
         alumnosCurso.add(alumno);
+    }
+            
+    public String getPropertyByIndex(int index) {
+        if(index == 0) {
+            return this.id;
+        } else if(index == 1) {
+            return this.nombre;
+        } else if( index == 2) {
+            return this.seccion;
+        } else if( index == 3) {
+            return this.fechaInicio;
+        } else if( index == 4) {
+            return this.fechaFin;
+        } else if( index == 5) {
+            return this.horaInicio;
+        } else if( index == 6) {
+            return this.horaFin;
+        } else if( index == 7) {
+            return this.profasignado.nombre;
+        } else {
+            return "";
+        }
     }
 
 }

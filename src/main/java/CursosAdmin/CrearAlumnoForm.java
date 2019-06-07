@@ -59,6 +59,8 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
         jTextApellido = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jButtonSalir = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jTextTelefono = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,6 +113,14 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Telefono");
+
+        jTextTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextTelefonoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,6 +128,11 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jTextTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -137,7 +152,7 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
                                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 181, Short.MAX_VALUE)
                                 .addComponent(jButtonCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(17, 17, 17))))
         );
@@ -167,7 +182,11 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         pack();
@@ -181,15 +200,17 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
         String nombre = jTextNombre.getText();
         String apellido = jTextApellido.getText();
         String password = jTextPassword.getText();
+        String telefono = jTextTelefono.getText();
         int carnet = Integer.parseInt(jTextUsuario.getText());
         System.out.println(this.index);
         if(this.index != null) {
             this.editarAlumno.nombre = nombre;
             this.editarAlumno.apellido = apellido;
             this.editarAlumno.password = password;
+            this.editarAlumno.telefono = telefono;
             JOptionPane.showMessageDialog(this, "Alumno editado correctamente");
         } else {
-            Alumno nuevoAlumno = new Alumno(carnet, nombre, apellido, password);
+            Alumno nuevoAlumno = new Alumno(carnet, nombre, apellido, password,telefono);
             this.alumnos.add(nuevoAlumno);
             jTextNombre.setText("");
             jTextApellido.setText("");
@@ -216,6 +237,10 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
+    private void jTextTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextTelefonoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCrear;
@@ -225,9 +250,11 @@ public class CrearAlumnoForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextApellido;
     private javax.swing.JTextField jTextNombre;
     private javax.swing.JTextField jTextPassword;
+    private javax.swing.JTextField jTextTelefono;
     private javax.swing.JTextField jTextUsuario;
     // End of variables declaration//GEN-END:variables
 }

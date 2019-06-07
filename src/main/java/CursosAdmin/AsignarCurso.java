@@ -177,11 +177,21 @@ public class AsignarCurso extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Alumno alumnoSeleccionado = (Alumno) jComboBoxAlumnos.getSelectedItem();
         Curso cursoSeleccionado = (Curso) jComboBoxCursos.getSelectedItem();
-        
-        alumnoSeleccionado.cursosAsignados.add(cursoSeleccionado);
-        cursoSeleccionado.alumnosCurso.add(alumnoSeleccionado);
-        JOptionPane.showMessageDialog(this, "Curso asignado correctamente");
-        this.dispose();
+        Boolean yaTiene = false;
+        for(int i =0; i< alumnoSeleccionado.cursosAsignados.size(); i++) {
+            if(alumnoSeleccionado.cursosAsignados.get(i).id.equals(cursoSeleccionado.id)) {
+                yaTiene = true;
+            }
+        }
+        if(yaTiene) {
+            JOptionPane.showMessageDialog(this, "El alumno ya tiene este curso asignado");
+        } else {
+            alumnoSeleccionado.cursosAsignados.add(cursoSeleccionado);
+            cursoSeleccionado.alumnosCurso.add(alumnoSeleccionado);
+            JOptionPane.showMessageDialog(this, "Curso asignado correctamente");
+            this.dispose();
+        }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

@@ -25,10 +25,14 @@ public class PerfilAlumno extends javax.swing.JFrame {
         int tam = this.alumno.notas.size();
         int suma = 0;
         for(int i = 0; i < tam; i++) {
-             suma += this.alumno.notas.get(i).nota;
+             suma += Integer.parseInt(this.alumno.notas.get(i).nota);
         }
-        int total = suma/tam;
-        this.jTextFieldPromedio.setText(Integer.toString(total));
+        if(tam != 0) {
+            int total = suma/tam;
+            this.jTextFieldPromedio.setText(Integer.toString(total));
+        } else {
+            this.jTextFieldPromedio.setText("0");
+        }
     }
 
     /**

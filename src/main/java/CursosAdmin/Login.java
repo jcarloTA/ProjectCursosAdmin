@@ -42,7 +42,6 @@ public class Login extends javax.swing.JFrame {
         jUsuarioNombre = new javax.swing.JTextField();
         jUsuarioPassword = new javax.swing.JTextField();
         jButtonIniciar = new javax.swing.JButton();
-        jButtonLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,8 +71,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButtonLimpiar.setText("Limpiar");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -81,16 +78,13 @@ public class Login extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButtonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jUsuarioPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlogin, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jUsuarioNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addContainerGap(254, Short.MAX_VALUE))
+                .addContainerGap(337, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,9 +100,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jUsuarioPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -129,6 +121,8 @@ public class Login extends javax.swing.JFrame {
         
         if("ADMIN".equals(usuario)&&"PROGRA1".equals(password)){
             AdminPanel admin = new AdminPanel(this.alumnos, profesores,cursos);
+            jUsuarioNombre.setText("");
+            jUsuarioPassword.setText("");
             admin.setVisible(true);
         } else {
             Profesor loginProf = null;
@@ -137,6 +131,8 @@ public class Login extends javax.swing.JFrame {
                if(p.password.equals(password) && p.usuario == Integer.parseInt(usuario)) {
                    loginProf = p;
                    ProfesorPanel pr = new ProfesorPanel(p);
+                   jUsuarioNombre.setText("");
+                   jUsuarioPassword.setText("");
                    pr.setVisible(true);
                    break;
                }
@@ -147,6 +143,8 @@ public class Login extends javax.swing.JFrame {
                    if(a.password.equals(password) &&  a.carnet == Integer.parseInt(usuario)){
                        loginAlm = a;
                        AlumnoPanel al = new AlumnoPanel(a, this.cursos);
+                       jUsuarioNombre.setText("");
+                       jUsuarioPassword.setText("");
                        al.setVisible(true);
                        break;
                    }
@@ -159,7 +157,6 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonIniciar;
-    private javax.swing.JButton jButtonLimpiar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jUsuarioNombre;

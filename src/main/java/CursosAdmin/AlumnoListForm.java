@@ -6,7 +6,10 @@
 package CursosAdmin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -15,24 +18,50 @@ import javax.swing.table.TableModel;
  */
 public class AlumnoListForm extends javax.swing.JFrame {
     public ArrayList<Alumno> alumnos;
-
+    public int ultimaPagina; 
+    public int pagina;
+    public int porPagina;
+    public String[] columns = {"Usuario","Nombre","Apellido","password","Telefono"};
+    
     public AlumnoListForm(ArrayList<Alumno> alumnos) {
         initComponents();
         this.alumnos = alumnos;
+        this.pagina = 0;
+        this.porPagina = 10;
+        this.ultimaPagina = this.alumnos.size() / this.porPagina;
+        this.jLabelLastPage.setText(this.ultimaPagina == 0 ? "1" : Integer.toString(this.ultimaPagina));
+        this.jLabelPage.setText(Integer.toString(this.pagina + 1));
         this.llenarTabla();
     }
-
+    
+    public String[][] getDataPorPagina(int pagina) {
+        int iniciarPagina = 0;
+        int endIndexAlumnos = this.alumnos.size();
+        int endIndexModel = this.alumnos.size();
+        if(this.pagina != 0) {
+            iniciarPagina = this.pagina * this.porPagina;
+        }
+        if(this.alumnos.size() > this.porPagina) {
+            endIndexModel = this.porPagina;
+            endIndexAlumnos = iniciarPagina + this.porPagina;
+        }
+        String[][] data = new String[this.porPagina][this.columns.length]; 
+        System.out.println("iniciar Pagina " + iniciarPagina);
+        System.out.println("termina Pagina" + endIndexAlumnos);
+        for (int xx=0, init = iniciarPagina; xx < endIndexModel; xx++, init++) {
+            System.out.println("alumno-----"+this.alumnos.get(init).nombre);
+            for (int yy=0; yy < 5; yy++) {
+                System.out.println(this.alumnos.get(init).getPropertyByIndex(yy));
+                data[xx][yy] = this.alumnos.get(init).getPropertyByIndex(yy);
+            }
+        }
+        return data;
+    }
     
     private void llenarTabla(){
-    
-        TableModel modelo = jTable1.getModel();
-        for(int i = 0; i < this.alumnos.size(); i++){
-            Alumno p = this.alumnos.get(i);
-            modelo.setValueAt(p.carnet, i, 0);
-            modelo.setValueAt(p.nombre, i, 1);
-            modelo.setValueAt(p.apellido, i, 2);
-            modelo.setValueAt(p.password, i, 3);
-        }
+        String[][] nuevoModel = getDataPorPagina(this.pagina);
+        jTable1.setModel(new DefaultTableModel(nuevoModel, this.columns));
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,6 +77,13 @@ public class AlumnoListForm extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButtonEliminar = new javax.swing.JButton();
+        jToggleButtonNexPag = new javax.swing.JToggleButton();
+        jToggleButtonPrevPag = new javax.swing.JToggleButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabelPage = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabelLastPage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,23 +106,18 @@ public class AlumnoListForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Usuario", "Nombre", "Apellido", "Password"
+                "Usuario", "Nombre", "Apellido", "Password", "Telefono"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -94,6 +125,37 @@ public class AlumnoListForm extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+
+        jButtonEliminar.setText("Eliminar");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
+
+        jToggleButtonNexPag.setText(">");
+        jToggleButtonNexPag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonNexPagActionPerformed(evt);
+            }
+        });
+
+        jToggleButtonPrevPag.setText("<");
+        jToggleButtonPrevPag.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonPrevPagActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Pagina ");
+
+        jLabelPage.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabelPage.setText("1");
+
+        jLabel4.setText("de");
+
+        jLabelLastPage.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jLabelLastPage.setText("2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,11 +168,30 @@ public class AlumnoListForm extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jToggleButtonPrevPag, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jToggleButtonNexPag, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(215, 215, 215)
+                        .addComponent(jLabel2)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabelPage, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelLastPage, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,11 +200,30 @@ public class AlumnoListForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(74, 74, 74)
+                                .addComponent(jToggleButtonNexPag, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(jToggleButtonPrevPag, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 108, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabelPage)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabelLastPage))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -150,12 +250,51 @@ public class AlumnoListForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        int[] selectedRows = jTable1.getSelectedRows();
+        if (selectedRows.length > 0) {
+            if(selectedRows[0] <= this.alumnos.size()) {
+                System.out.println(this.alumnos.get(selectedRows[0]).nombre);
+                this.alumnos.remove(selectedRows[0]);
+                JOptionPane.showMessageDialog(this, "Alumno Elminado");
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecciona un alumno");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Selecciona un alumno");
+        }
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
+
+    private void jToggleButtonNexPagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonNexPagActionPerformed
+        if(this.pagina < (this.ultimaPagina -1)){
+            this.pagina += 1;
+            this.jLabelPage.setText(Integer.toString(this.pagina + 1));
+            this.llenarTabla();
+        }
+    }//GEN-LAST:event_jToggleButtonNexPagActionPerformed
+
+    private void jToggleButtonPrevPagActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonPrevPagActionPerformed
+        if(this.pagina != 0){
+            this.pagina -= 1;
+            this.jLabelPage.setText(Integer.toString(this.pagina + 1));
+            this.llenarTabla();
+        }
+    }//GEN-LAST:event_jToggleButtonPrevPagActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonEliminar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabelLastPage;
+    private javax.swing.JLabel jLabelPage;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JToggleButton jToggleButtonNexPag;
+    private javax.swing.JToggleButton jToggleButtonPrevPag;
     // End of variables declaration//GEN-END:variables
 }
